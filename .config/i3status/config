@@ -1,0 +1,83 @@
+general {
+        output_format = "i3bar"
+        colors = true
+        interval = 5
+        
+}
+
+#order += "ipv6"
+order += "disk /"
+order += "run_watch DHCP"
+#order += "run_watch VPNC"
+#order += "path_exists VPN"
+order += "wireless _first_"
+order += "ethernet _first_"
+#order += "battery 0"
+order += "cpu_temperature 1"
+order += "cpu_temperature 2"
+order += "cpu_temperature 3"
+order += "cpu_temperature 4"
+order += "load"
+order += "cpu_usage"
+order += "volume master"
+order += "tztime local"
+#order += "tztime berlin"
+
+wireless _first_ {
+        format_up = "W: (%quality at %essid, %bitrate / %frequency) %ip"
+        format_down = "W: down"
+}
+
+ethernet _first_ {
+        # if you use %speed, i3status requires the cap_net_admin capability
+        format_up = "E: %ip (%speed)"
+        format_down = ""#"E: down"
+}
+
+run_watch DHCP {
+        pidfile = "/var/run/dhclient*.pid"
+        format_down=""
+}
+
+
+
+tztime local {
+        format = "%D %l:%M %p"#:%S"
+}
+
+load {
+        format = "%1min"
+}
+
+cpu_temperature 1 {
+        format = "%degrees °C"
+        path = "/sys/devices/platform/coretemp.0/hwmon/hwmon2/temp1_input"
+}
+cpu_temperature 2 {
+        format = "%degrees °C"
+        path = "/sys/devices/platform/coretemp.0/hwmon/hwmon2/temp2_input"
+}
+cpu_temperature 3 {
+        format = "%degrees °C"
+        path = "/sys/devices/platform/coretemp.0/hwmon/hwmon2/temp3_input"
+}
+cpu_temperature 4 {
+        format = "%degrees °C"
+        path = "/sys/devices/platform/coretemp.0/hwmon/hwmon2/temp4_input"
+}
+
+cpu_usage {
+        format="all: %usage"
+}
+
+disk "/" {
+        format = "ROOT: %free"
+}
+
+volume master {
+        format = "♪: %volume"
+        format_muted = "♪: muted (%volume)"
+        device = "pulse:1"
+        mixer = "Master"
+        mixer_idx = 0
+}
